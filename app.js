@@ -1,64 +1,132 @@
 const inquirer = require("inquirer");
-// const axios = require("axios");
-// const fs = require("fs");
+const fs = require("fs");
+// const writeFileAsync = util.promisify(fs.writeFile);
 
-inquirer
-  .prompt([
-    {
-    type: 'input',
-    message: 'What is your name?',
-    name: 'name',
-    }, 
-    {
-    type: 'input',
-    message: 'What is your id number?',
-    name: 'idNumber',
-    }, 
-    {
-    type: 'input',
-    message: 'What is your e-mail?',
-    name: 'email',
-    }, 
-    {
-    type: "list",
-    name: "titles",
-    message: "What is your title at work?",
-    choices: [
-        { name: "Manager", value: 1 }, 
-        { name: "Engineer", value: 2 }, 
-        { name: "Intern", value: 3}]
+
+function appMenu() {
+   createManager() 
+    function createManager() {
+      inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is your name?',
+            name: 'name',
+            }, 
+            {
+            type: 'input',
+            message: 'What is your id number?',
+            name: 'idNumber',
+            }, 
+            {
+            type: 'input',
+            message: 'What is your e-mail?',
+            name: 'email',
+            },
+            {
+            type: 'input',
+            message: 'What is your office number?',
+            name: 'officeNumber',
+            }
+      ]).then(answers => {
+        class Manager{
+            constructor (name, id, email, officeNumber) {
+                super(name, id, email);
+                answers.name = name;
+                answers.id = id;
+                answers.email = email;
+                answers.officeNumber = officeNumber;
+            }
+        }
+        module.exports = Manager;
+        createTeam();
+      });
     }
-  ])
-  .then ((responses) => {
-        if (responses.titles === 1) {
-            inquirer
-                .prompt([
-                {
-                type: 'input',
-                message: 'What is your office number?',
-                name: 'officeNumber',
-                }
-            ])
-            
+    function createTeam() {
+      inquirer.prompt([
+        {
+        type: "list",
+        name: "titles",
+        message: "What is your title at work?",
+        choices: [
+            { name: "Engineer", value: 1 }, 
+            { name: "Intern", value: 2}]
         }
-        else if (responses.titles === 2) {
-            inquirer
-                .prompt([
-                {
-                type: 'input',
-                message: 'What is your GitHub name?',
-                name: 'github',
-                }
-            ])
+      ]).then(userChoice => {
+        if (userChoice === 1) {
+            addEngineer();
         }
-        else if (responses.titles === 3) {
-            inquirer
-                .prompt([
-                {
-                type: 'input',
-                message: 'What school do you go to?',
-                name: 'school',
-                }
-            ])
-        } 
-});
+        else if (userChoice === 2) {
+           addIntern()
+        }
+    });
+    function addEngineer() {
+      inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is your name?',
+            name: 'name',
+            }, 
+            {
+            type: 'input',
+            message: 'What is your id number?',
+            name: 'idNumber',
+            }, 
+            {
+            type: 'input',
+            message: 'What is your e-mail?',
+            name: 'email',
+            },
+            {
+            type: 'input',
+            message: 'What is your GitHub name?',
+            name: 'github',
+            }
+      ]).then(answers => {
+        class Engineer{
+            constructor (name, id, email, gitHub) {
+                super(name, id, email);
+                answers.name = name;
+                answers.id = id;
+                answers.email = email;
+                answers.gitHub = gitHub;
+            }
+        }
+        module.exports = Engineer;
+        createTeam();
+      });
+    }
+    function addIntern() {
+      inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is your name?',
+            name: 'name',
+            }, 
+            {
+            type: 'input',
+            message: 'What is your id number?',
+            name: 'idNumber',
+            }, 
+            {
+            type: 'input',
+            message: 'What is your e-mail?',
+            name: 'email',
+            },
+            {
+            type: 'input',
+            message: 'What school do you go to?',
+            name: 'school',
+            }
+      ]).then(answers => {
+        /* create interin */
+        createTeam();
+      });
+    }
+    function buildTeam() {
+      fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
+    }
+    createManager();
+};
+};
+
+appMenu();
