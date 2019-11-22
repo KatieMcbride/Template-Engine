@@ -1,15 +1,13 @@
 const inquirer = require("inquirer");
-const fs = require("fs");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 const outputPath = path.resolve(__dirname, "output", "team.html");
-const render = require("./lib/htmlRenderer");
 const teamMembers = [];
 const idArray = [];
+
 
 
 
@@ -38,19 +36,42 @@ function appMenu() {
             name: 'managerOfficeNumber',
         }
     ]).then (answers => {
-        const Manager{
             const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
             teamMembers.push(manager);
             idArray.push(answers.managerId);
             createTeam();
-        }
-        module.exports = Manager;
+    });
+
+    module.exports = Manager;
+    }
+}    
+
+function moreTeam(){
+    inquirer
+        .prompt([
+        {
+        type: "list",
+        name: "continue",
+        message: "Would you like to add more employees?",
+        choices: [
+            { name: "Yes" }, 
+            { name: "No" }]
+        }  
+    ])
+    .then(userChoice => {
+    if (userChoice.continue === "Yes") {
+        createTeam();
+    }
+    else if (userChoice.continue === "No") {
+        buildTeam();
+        console.log('no');
+    }
     });
 }
 
 function createTeam() {
     inquirer
-        .prompt([
+        .prompt([  
         {
         type: "list",
         name: "titles",
@@ -67,7 +88,8 @@ function createTeam() {
         else if (userChoice.titles === "Intern") {
            addIntern()
         }
-});
+    });
+}    
 
 function addEngineer() {
     inquirer
@@ -75,30 +97,31 @@ function addEngineer() {
     {
     type: 'input',
     message: 'What is your name?',
-    name: 'name',
+    name: 'engineerName',
     }, 
     {
     type: 'input',
     message: 'What is your id number?',
-    name: 'idNumber',
+    name: 'engineerId',
     }, 
     {
     type: 'input',
     message: 'What is your e-mail?',
-    name: 'email',
+    name: 'engineerEmail',
     },
     {
     type: 'input',
     message: 'What is your GitHub name?',
-    name: 'github',
+    name: 'engineerGithub',
     }, 
     ])
     .then(answers => {
-        const Engineer{
-            
-        }
-        module.exports = Engineer;
-    });      
+        const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
+            teamMembers.push(engineer);
+            idArray.push(answers.engineerId);
+            moreTeam();
+    });   
+    module.exports = Engineer;   
 }
 
 
@@ -107,43 +130,51 @@ function addIntern() {
         {
             type: 'input',
             message: 'What is your name?',
-            name: 'name',
+            name: 'internName',
             }, 
             {
             type: 'input',
             message: 'What is your id number?',
-            name: 'idNumber',
+            name: 'internId',
             }, 
             {
             type: 'input',
             message: 'What is your e-mail?',
-            name: 'email',
+            name: 'internEmail',
             },
             {
             type: 'input',
             message: 'What school do you go to?',
-            name: 'school',
+            name: 'internSchool',
             }
       ]).then(answers => {
-        class Intern{
-            constructor (name, id, email, school) {
-                answers.name = name;
-                answers.id = id;
-                answers.email = email;
-                answers.school = school;
-            }
-        }
-        module.exports = Intern;
-        createTeam();
-      });
-    }
-    // function buildTeam() {
-        const html =
-        ``
-    //   fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
-    // }
-    // createManager();
+        const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
+        teamMembers.push(intern);
+        idArray.push(answers.internId);
+        moreTeam();
+        })
+    
+    module.exports = Intern;
 };
+
+function buildTeam() {
+    console.log(teamMembers);
+    const htmlBuild =
+    `<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Employee</title>
+        </head>
+        <body>
+            <div> Employee name: ${teamMembers[0].name}</div>
+        </body>
+    </html>`
+
+    return fs.writeFileSync("team.html", htmlBuild , "utf-8")
+
 };
 
 appMenu();
