@@ -7,9 +7,7 @@ const fs = require("fs");
 // const outputPath = path.resolve(__dirname, "output", "team.html");
 const teamMembers = [];
 const idArray = [];
-
-
-
+let allemployeeHtml = '';
 
 function appMenu() {
    createManager(); 
@@ -159,7 +157,26 @@ function addIntern() {
 
 function buildTeam() {
     console.log(teamMembers);
-    const htmlBuild =
+    
+    teamMembers.forEach(element => {
+        console.log(element.getRole());
+           let employeeHtml = 
+           `<div>    
+                <div class="card-header text-center text-white bg-primary font-weight-bold">
+                Manager
+                </div>
+                <div> Employee name: ${element.getName()}</div>
+                <div> Employee iD: ${element.id}</div>
+                <div> Employee email: ${element.email}</div>
+                <div> Employee office Number: ${element.officeNumber}</div> 
+            </div>`;
+    
+        
+        
+        allemployeeHtml  = allemployeeHtml + employeeHtml;
+    });
+
+    const headerHtml =
     `<!DOCTYPE html>
     <html lang="en">
         <head>
@@ -173,50 +190,18 @@ function buildTeam() {
         <div class="jumbotron">
             <h1 class= "text-center">Team Members</h1>
         </div>
-        <div class="row d-flex">
-        <div class="col-3 card m-5">
-            <div>
-                <div class="card-header text-center text-white bg-primary font-weight-bold>
-                Manager
-                </div>
-                <div> Employee name: ${teamMembers[0].name}</div>
-                <div> Employee iD: ${teamMembers[0].id}</div>
-                <div> Employee email: ${teamMembers[0].email}</div>
-                <div> Employee office Number: ${teamMembers[0].officeNumber}</div>
-            </div>
-        </div>
-        <div class="col-3 card m-5">
-            <div class="container">
-                <div>
-                <div class="card-header text-center text-white bg-success font-weight-bold">
-                 Engineer
-                </div>
-                <div> Employee name: ${teamMembers[1].name}</div>
-                <div> Employee iD: ${teamMembers[1].id}</div>
-                <div> Employee email: ${teamMembers[1].email}</div>
-                <div> Employee github name: ${teamMembers[1].github}</div>
-            </div>
-            </div>
-        </div>
-        <div class="col-3 card m-5">
-            <div class="container">
-                <div>
-                    <div class="card-header text-center text-white bg-warning font-weight-bold">
-                    Intern
-                    </div>
-                    <div> Employee name: ${teamMembers[2].name}</div>
-                    <div> Employee iD: ${teamMembers[2].id}</div>
-                    <div> Employee email: ${teamMembers[2].email}</div>
-                    <div> Employee school: ${teamMembers[2].school}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-            
-    </body>
-    </html>`
+        <div class="row d-flex">`;
+        let htmlBuild = headerHtml + allemployeeHtml;
+        const footerHtml = `
+        </div> 
+        </body>
+        </html>`;
+        htmlBuild = htmlBuild + footerHtml;
+    
+    console.log(htmlBuild);
 
     return fs.writeFileSync("team.html", htmlBuild , "utf-8")
+    
 
 };
 
