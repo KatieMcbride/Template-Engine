@@ -159,16 +159,17 @@ function buildTeam() {
     console.log(teamMembers);
     
     teamMembers.forEach(element => {
-        console.log(element.getRole());
            let employeeHtml = 
-           `<div>    
+           `<div class="col-3 card m-5">
+            <div class="container">
                 <div class="card-header text-center text-white bg-primary font-weight-bold">
-                Manager
+                ${element.getRole()}
                 </div>
                 <div> Employee name: ${element.getName()}</div>
-                <div> Employee iD: ${element.id}</div>
-                <div> Employee email: ${element.email}</div>
-                <div> Employee office Number: ${element.officeNumber}</div> 
+                <div> Employee iD: ${element.getId()}</div>
+                <div> Employee email: ${element.getEmail()}</div>
+                <div> Employee office Number: ${element.getOfficeNumber()}</div> 
+            </div>
             </div>`;
     
         
