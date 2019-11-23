@@ -159,6 +159,17 @@ function buildTeam() {
     console.log(teamMembers);
     
     teamMembers.forEach(element => {
+        let variable;
+        if (element.getRole() === "Manager"){
+            variable = `Office Number: ${element.getOfficeNumber()}`
+        }
+        if (element.getRole()=== "Engineer"){
+            variable = `Github name: ${element.getGithub()}`
+        }
+        if (element.getRole()=== "Intern"){
+            variable = `School: ${element.getSchool()}`
+        }
+    
            let employeeHtml = 
            `<div class="col-3 card m-5">
             <div class="container">
@@ -168,10 +179,10 @@ function buildTeam() {
                 <div> Employee name: ${element.getName()}</div>
                 <div> Employee iD: ${element.getId()}</div>
                 <div> Employee email: ${element.getEmail()}</div>
-                <div> Employee office Number: ${element.getOfficeNumber()}</div> 
+                <div> ${variable} </div>
+                
             </div>
             </div>`;
-    
         
         
         allemployeeHtml  = allemployeeHtml + employeeHtml;
