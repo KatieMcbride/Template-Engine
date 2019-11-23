@@ -4,7 +4,6 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const path = require("path");
 const fs = require("fs");
-// const outputPath = path.resolve(__dirname, "output", "team.html");
 const teamMembers = [];
 const idArray = [];
 let allemployeeHtml = '';
